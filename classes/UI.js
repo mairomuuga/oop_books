@@ -1,56 +1,41 @@
-class UI{
-	addUIelement(elementname, classname = "", textcontent = "", attributes={}){
-		const element = document.createElement(elementname);
-		element.className = classname;
-		element.appendChild(document.createTextNode(textcontent));
+class UI {
+	addBook(title, author, isbn) {
+		const tr = document.createElement('tr');
+		tr.className = 'collection-item';
 
-		if(Object.keys(attributes).length > 0){
-			for(let key in attributes){
-				element.setAttribute(key, attributes[key]);
-			}
-		}
-		return element;
+		const tdAuthor = document.createElement('td');
+		tdAuthor.appendChild(document.createTextNode(author));
+		tr.appendChild(tdAuthor);
+
+		const tdTitle = document.createElement('td');
+		tdTitle.appendChild(document.createTextNode(title));
+		tr.appendChild(tdTitle);
+
+		const tdISBN = document.createElement('td');
+		tdISBN.appendChild(document.createTextNode(isbn));
+		tr.appendChild(tdISBN);
+
+		const tdLink = document.createElement('td')
+		const link = document.createElement('a');
+		link.className = 'secondary-content';
+		link.appendChild(document.createTextNode('X'));
+		link.setAttribute('href', '#');
+		tdLink.appendChild(link)
+		tr.appendChild(tdLink);
+
+		const list = document.querySelector('tbody.table-list');
+		list.appendChild(tr);
+
+		const input1 = document.querySelector('#book-title');
+		input1.value = "";
+		const input2 = document.querySelector('#book-author');
+		input2.value = "";
+		const input3 = document.querySelector('#book-isbn');
+		input3.value = "";
 	}
-	addTask(task){
-		// create list item
-		const li = this.addUIelement("li", "collection-item", task.name);
-		// create link
-		const link = this.addUIelement("a","secondary-content","X",{"href": "#"});
-		// add link to list item
-		li.appendChild(link);
-		// find list to add created list item
-		const list = document.querySelector('ul');
-		list.appendChild(li);
-		// find input to clear this value
-		const input = document.querySelector("#task");
-		input.value = "";
-		// log to console that task is added to UI
-		task.addedToUI();
-	}
-	deleteTask(task){
-		const deleteIcon = task.nextSibling;
-		if(deleteIcon.textContent === "X"){
-			if(confirm("Do you want to remove this task?")) {
-				task.parentElement.remove()
-			}
-		}
-	}
-	deleteTasks(tasks){
-		while(tasks.firstChild){
-			tasks.removeChild(tasks.firstChild);
-		}
-	}
-	getTasks(tasks){
-		for(let i = 0; i < tasks.length; i++){
-			// create list item
-			const li = this.addUIelement("li", "collection-item", tasks[i].name);
-			// create link
-			const link = this.addUIelement("a", "secondary-content", "X", {"href" : "#"});
-			// add link to list item
-			li.appendChild(link);
-			// find list to add created list item
-			const list = document.querySelector("ul");
-			list.appendChild(li);
+	deleteBook(book){
+		if(book.textContent == "X"){
+			book.parentElement.parentElement.remove()
 		}
 	}
 }
